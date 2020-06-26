@@ -1,15 +1,9 @@
-
-
 学习笔记
 
-very good
+# Part One
 
-# it's a remark?
+# Part Two
 
-yes,i write NOTE.md again ,so do it
+# Part Three
 
-# try again?
-
-no,this will be the last change,may be
-
-# try again it's dinner time i am hunger!
+# Part Four
