@@ -11,4 +11,6 @@ import scrapy
 class BlackwidowItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    film_name = scrapy.Field()
+    film_type = scrapy.Field()
+    film_rel_date = scrapy.Field()
