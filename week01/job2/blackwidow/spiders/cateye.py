@@ -26,6 +26,5 @@ class CateyeSpider(scrapy.Spider):
             bw_item['film_name'] = film_name
             bw_item['film_type'] = film_type
             bw_item['film_rel_date'] = film_rel_date
-            print('?????????????????????????????', bw_item)
             yield bw_item
         

@@ -8,12 +8,12 @@
 class BlackwidowPipeline:
     def process_item(self, item, spider):
         film_name = item['film_name']
-        film_type = item['film_type']
-        film_rel_date = item['film_rel_date']
+        film_type = item['film_type'][1].split()[0]
+        film_rel_date = item['film_rel_date'][1].split()[0]
 
         output = f'{film_name},{film_type},{film_rel_date}\n'
 
-        with open ('./job2_result.txt','a+',encoding='utf-8') as fo:
+        with open ('./job2_result.csv','a+',encoding='utf-8') as fo:
             fo.write(output)
         print('job2_result.txt has dump!')
         
