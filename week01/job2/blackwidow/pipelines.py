@@ -7,14 +7,15 @@
 
 class BlackwidowPipeline:
     def process_item(self, item, spider):
-        file_name = item['file_name']
-        file_type = item['file_type']
-        file_rel_date = item['file_rel_date']
+        film_name = item['film_name']
+        film_type = item['film_type']
+        film_rel_date = item['film_rel_date']
 
-        output = f'{file_name},{file_type},{file_rel_date}'
+        output = f'{film_name},{film_type},{film_rel_date}\n'
 
-        with open ('./PAC3/week01/job2_result.csv','a+',encoding='utf8') as fo:
+        with open ('./job2_result.txt','a+',encoding='utf-8') as fo:
             fo.write(output)
+        print('job2_result.txt has dump!')
         
         return item
 
