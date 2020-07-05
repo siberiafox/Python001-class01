@@ -29,6 +29,7 @@ def load_proxy_from_db(
         print('no table named %s' % table_name)
         cur.close()
         conn.close()
+        return ['http://95.217.34.209:3128']
     
     df = pd.read_csv(out_path, dtype='str')
     df.sort_values('speed', ascending=False, inplace=True)
