@@ -14,7 +14,7 @@ header['Cookie'] = '__mta=141999757.1593174899684.1593182040854.1593223784235.18
 url_maoyan = 'https://maoyan.com/films?showType=3'
 
 # get method and return a response obj instance
-respo = requests.get(url=url_maoyan,headers=header)
+respo = requests.get(url = url_maoyan, headers = header)
 print('text of respo is: ',respo.text)
 
 if respo.status_code == 200:
@@ -44,9 +44,9 @@ if respo.status_code == 200:
                 ary.append(info[1].strip())
             else:
                 ary.append(None)
-    df = pd.DataFrame(np.array(ary).reshape(-1,len(col_names)),columns=col_names)
+    df = pd.DataFrame(np.array(ary).reshape(-1, len(col_names)), columns=col_names)
     print('saving file to loc ...')
-    df.to_csv('./PAC3/week01/job1_result.csv',encoding='utf8',index=False)
+    df.to_csv('./PAC3/week01/job1_result.csv',encoding = 'utf8',index = False)
     print('saved in current path')
 else:
     print('there are something wrong, checkout later!')
