@@ -8,6 +8,7 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+from mysql_config import load_proxy_from_db
 
 BOT_NAME = 'blackwidow'
 
@@ -59,11 +60,7 @@ DOWNLOADER_MIDDLEWARES = {
    'blackwidow.middlewares.RandomHttpProxyMiddleware': 400,
 }
 
-HTTP_PROXY_LIST = [
-   "http://40.65.136.31:8080",
-   "http://113.196.140.162:8888",
-   "http://149.28.14.106.8080",
-]
+HTTP_PROXY_LIST = load_proxy_from_db()
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

@@ -37,7 +37,8 @@ class BlackwidowPipeline:
 
 
     # protected method, using default database 'test'
-    def _saved_mysql(self, item, col_names, spider_name, db = 'test'):
+    @staticmethod
+    def _saved_mysql(item, col_names, spider_name, db = 'test'):
         # connect mysql
         conn = pymysql.connect(
             host = db_info['host'],
@@ -52,19 +53,25 @@ class BlackwidowPipeline:
         # saved or rollback
         try:
             # saved in mysql
-            create_info = ','.join([i + ' ' + j for i,j in col_names.items()])
-            cur.execute(f'create table if not exists {spider_name} ({create_info})')
-            insert_info = ','.join([
-                item['proxy_ip'],
-                item['proxy_port'],
-                item['proxy_protocol'],
-                item['proxy_validate'],
-                item['proxy_speed']
-                ])
-            cur.execute(f'insert into table {spider_name} values ({insert_info})')
+            cur.execute(f'show tables')
+            existed_table = cur.fetchone()
+            # print(existed_table)
+            if spider_name not in existed_table:
+                create_info = ','.join([i + ' ' + j for i,j in col_names.items()])
+                cur.execute(f'create table if not exists {spider_name} ({create_info})')
+            insert_info = ""
+            for i in item.items():
+                insert_info+="'"
+                insert_info+=str(i[1])
+                insert_info+="'"
+                insert_info+=","
+            insert_info = insert_info[:-1]
+            cur.execute(f'insert into {spider_name} values ({insert_info})')
+            # print('insertion over!')
             cur.close()
             conn.commit()
         except:
+            print('something wrong,db will rollback!')
             conn.rollback()
         finally:
             conn.close()
