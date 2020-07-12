@@ -7,9 +7,18 @@ from socket import *
 
 
 # multiprocess
-def make_processes(workers=5):
+def make_processes(q,func,fin,workers=5):
     with ProcessPoolExecutor(workers) as p:
-        pass
+        try:
+            if func == 'ping':
+                results = p.map(ScanThread.ping_ip,q)
+            elif func == 'tcp':
+                results = p.map(ScanThread.check_server,q)
+        for r in results:
+            json.dump(r,fin)
+        except Exception as e:
+            print(e)
+        
 
 # threads
 class ScanThread(threading.Thread):

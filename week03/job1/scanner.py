@@ -1,6 +1,7 @@
 import sys
 import time
 from queue import Queue
+import multiprocessing
 from threading import Lock
 from collections import defaultdict
 from scanner_pre import check_input_params, update_params,make_ips
@@ -49,7 +50,7 @@ def main_scanner():
                 q.put((ip,))
         elif params['f'] == 'tcp':
             for ip in ips:
-                for type_,ports in usual_ports:
+                for type_,ports in usual_ports.items():
                     for port in ports:
                         q.put((ip,port))
         thread_names = [f'scan_{i}' for i in range(params['n'])]
@@ -61,13 +62,23 @@ def main_scanner():
             t.join()
 
     elif params['m'] == 'multip':
-        pass
-
-    fin.close()
+        q = multiprocessing.Manager().Queue()
+        if params['f'] == 'ping':
+            for ip in ips:
+                q.put((ip,))
+            make_processes(q,params['f'],params['w'],params['n'])
+        elif params['f'] == 'tcp':
+            for ip in ips:
+                for type_,ports in usual_ports.items():
+                    for port in ports:
+                        q.put((ip,port))
+            make_processes(q,params['f'],params['w'],params['n'])
 
     if params['v']:
         time_end = time.time()
-    print(f'this loop costs time is {time_end-time_start} seconds!')
+        print(f'this loop costs time is {time_end-time_start} seconds!')
+    fin.close()
+    print('file had closed')
 
 
 # this moudle test for main function
