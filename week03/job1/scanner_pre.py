@@ -1,5 +1,27 @@
 import re
-from scanner import d,usual_ports
+
+# global params
+# init params set
+d = {
+    'n':None, # 并发数量,范围1-10
+    'f':None, # cmd指令，包含ping/tcp
+    'ip':None, # 支持连续ip 例如 192.168.0.1-192.168.0.100
+    'w':None, # 扫描结果保存本机路径地址
+    'm':None, # 选做，指定扫描器使用多进程或多线程模型,multip或者thread
+    'v':None # 选做 打印扫描器运行耗时,'1'显示,'0'不显示
+}
+# init usual ports set
+usual_ports = {
+    'http':[80,8080,3128,8081,9098],
+    'socks':[1080],
+    'ftp':[21],
+    'telnet':[23],
+    'tftp':[69],
+    'ssh':[22],
+    'smtp':[25],
+    'pop3':[110]
+}
+
 
 def check_input_params(params):
     # keys:input params name
@@ -75,7 +97,7 @@ def update_params(params_dict):
 def make_ips(ip_list):
     new_list = []
     if len(ip_list) == 1:
-        return ip_list[0]
+        return ip_list
     elif len(ip_list) == 2:
         *base_ip_start,ip_start = ip_list[0].split('.')
         *base_ip_end,ip_end = ip_list[1].split('.')

@@ -4,30 +4,8 @@ from queue import Queue
 from threading import Lock
 from collections import defaultdict
 from scanner_pre import check_input_params, update_params,make_ips
-from scanner_util import ping_ip,check_server,ScanThread
-
-# global params
-# init params set
-d = {
-    'n':None, # 并发数量,范围1-10
-    'f':None, # cmd指令，包含ping/tcp
-    'ip':None, # 支持连续ip 例如 192.168.0.1-192.168.0.100
-    'w':None, # 扫描结果保存本机路径地址
-    'm':None, # 选做，指定扫描器使用多进程或多线程模型,multip或者thread
-    'v':None # 选做 打印扫描器运行耗时,'1'显示,'0'不显示
-}
-# init usual ports set
-usual_ports = {
-    'http':[80,8080,3128,8081,9098],
-    'socks':[1080],
-    'ftp':[21],
-    'telnet':[23],
-    'tftp':[69],
-    'ssh':[22],
-    'smtp':[25],
-    'pop3':[110]
-}
-
+from scanner_util import ScanThread,make_processes
+from scanner_pre import d,usual_ports
 
 def main_scanner():
     try:
@@ -66,8 +44,14 @@ def main_scanner():
 
     if params['m'] is None or params['m'] == 'thread':
         q = Queue(20)
-        for ip in ips:
-            q.put((ip))
+        if params['f'] == 'ping':
+            for ip in ips:
+                q.put((ip,))
+        elif params['f'] == 'tcp':
+            for ip in ips:
+                for type_,ports in usual_ports:
+                    for port in ports:
+                        q.put((ip,port))
         thread_names = [f'scan_{i}' for i in range(params['n'])]
         threads = []
         for name in thread_names:
@@ -78,6 +62,8 @@ def main_scanner():
 
     elif params['m'] == 'multip':
         pass
+
+    fin.close()
 
     if params['v']:
         time_end = time.time()

@@ -13,7 +13,7 @@ def make_processes(workers=5):
 
 # threads
 class ScanThread(threading.Thread):
-    def __init__(self,name,q,func,out_put,lock):
+    def __init__(self,name,q,func,output,lock):
         super().__init__()
         self.name = name
         self.q = q
@@ -33,13 +33,17 @@ class ScanThread(threading.Thread):
                 break
             else:
                 self.info = self.q.get()
-                r = self.func(*self.info)
-                lock.acquire()
+                # print(self.info)
+                if self.func == 'ping':
+                    r = self.ping_ip(*self.info)
+                elif self.func == 'tcp':
+                    r = self.check_server(*self.info)
+                self.lock.acquire()
                 try:
                     if r:
-                    json.dump(self.info,self.output)
+                        json.dump(self.info,self.output)
                 finally:
-                    lock.release()
+                    self.lock.release()
 
      # tcp method
     @staticmethod
@@ -59,7 +63,7 @@ class ScanThread(threading.Thread):
     def ping_ip(ip):
         flag = os.system(f'ping {ip}')
         if not flag:
-            print(f'{ips[0]} can ping')
+            print(f'{ip} can ping')
             return True
         else:
             print(f'{ip} can not ping,abandoned')
