@@ -56,7 +56,7 @@ DEFAULT_REQUEST_HEADERS = {
 DOWNLOADER_MIDDLEWARES = {
    'blackwidow.middlewares.BlackwidowDownloaderMiddleware': 543,
    'scrapy.downloadermiddlewares.httpproxy.HttpProxyMiddleware': None,
-   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 400,
+   'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': 300,
    'blackwidow.middlewares.RandomHttpProxyMiddleware': 400,
 }
 
