@@ -1,0 +1,14 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MoviesList</title>
+</head>
+<body>
+
+{% for movie in n %}
+    <div>movie_name: {{ movie.movie_name }}   <br>
+        movie_type: {{ movie.movie_type }} <br>
+        movie_time:  {{ movie.movie_time }}  
+    </div>
+{% endfor %}
+</body>
